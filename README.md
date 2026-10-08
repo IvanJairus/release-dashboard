@@ -36,9 +36,30 @@ password `change-me-demo`. The demo password exists so the app is runnable; it i
 never read from disk by anything but the seed script.
 
 ```bash
-npm test             # 30 unit tests, node:test, no test framework
-node scripts/smoke.js  # 16 checks against a live server: session, refusal, audit
+npm test               # 38 unit tests, node:test, no test framework
+node scripts/smoke.js  # 25 checks against a live server: session, refusal, audit
 ```
+
+## What the console shows
+
+Eight views, one page, no framework and no CDN: the browser loads the same ES
+modules you can read in `public/js/`, and every number on screen is computed by
+the server from the record files on request.
+
+| View | What it answers |
+|---|---|
+| Dashboard | how many services drift between SIT and UAT, and how often anything deploys |
+| Board | which ticket is stuck, and the guard's exact refusal text next to it |
+| Deploys | history, a promotion form that cannot skip a rung, and the live event stream |
+| Pre-UAT | the release plan, generated from version drift alone, with a reason per block |
+| Scans | quality gates and image findings — the inputs the plan refuses to promote |
+| Testing | recorded suites and their pass rate |
+| Secrets | vault paths, rotation age, and no way to read a value |
+| Settings | projects, the account directory, key rotation, the audit trail, self-reported health |
+
+The sidebar's project filter scopes every one of those views through a single
+loader, and the access policy is rendered from the server's own permission table
+rather than a copy kept in the client.
 
 ## What is enforced here
 
@@ -57,6 +78,9 @@ Each rule is a guard, and each guard has a test that tries to break it.
 | A webhook that re-triggers itself is dropped | `src/domain/watermark.js` | `the loop breaker: the event a command caused cannot re-issue it` |
 | A stale browser view cannot overwrite a newer one | `routes/tickets.js` | `a stale view is refused, not applied` |
 | No role can grant every approval layer | `src/middleware/rbac.js` | `no role holds every approval layer` |
+| Reading release data is not reading credential paths | `rbac.js`, `routes/insights.js` | `reading secret paths is a separate right from reading releases` |
+| A release plan cannot contain a service that did not change | `OverviewService.releasePlan` | `a plan row lists every reason it is blocked, not just the first` |
+| Nothing in the API can return a secret value | `routes/insights.js` | `a secret value reached the API` |
 | Passwords are never stored or logged recoverably | `JsonAuthProvider`, `AuditService.redact` | `a stored record verifies its password and nothing else` |
 | The server will not boot half-configured | `server.js readConfig` | `refusing to start, missing: …` |
 
@@ -66,33 +90,36 @@ Each rule is a guard, and each guard has a test that tries to break it.
 server.js                        config parsing and startup; fails closed
 src/domain/ticket.js             phases, transitions, approval layers, guards
 src/domain/watermark.js          idempotency: the loop breaker
-src/middleware/rbac.js           15 permissions, 4 roles, no role is a superuser
+src/middleware/rbac.js           18 permissions, 4 roles, no role is a superuser
 src/middleware/auth.js           signed-cookie sessions, permission middleware
 src/middleware/apiKey.js         machine callers
+src/middleware/headers.js        CSP and friends: single-origin, no inline script
 src/middleware/rateLimiter.js    token bucket per principal
 src/middleware/logger.js         one grep-able prefix for every stage
 src/auth/JsonAuthProvider.js     scrypt password verification, digest-only API keys
 src/services/TicketService.js    the single write path for every caller
 src/services/PromotionService.js the environment ladder and its segregation rule
+src/services/OverviewService.js  every number on screen, derived not stored
 src/services/EventBus.js         SSE fan-out to every open board
 src/services/AuditService.js     append-only JSONL, secrets redacted
 src/repositories/JsonFileRepository.js  atomic writes via rename
-src/routes/                      auth, tickets, promotions, events, admin
-public/                          the board: no framework, one EventSource
-tests/ scripts/                  30 unit tests + a live-server smoke suite
+src/routes/                      auth, tickets, promotions, insights, events, admin
+public/                          the console: ES modules, hand-written CSS, SVG charts
+tests/ scripts/                  38 unit tests + a live-server smoke suite
 data/                            synthetic fixtures produced by npm run seed
 ```
 
 ## Numbers, measured rather than remembered
 
-- 1.023 lines of server-side JavaScript, 272 lines of client, 465 lines of tests
-  and scripts, across 35 tracked files.
-- 21 route handlers. 4 roles, 15 named permissions, 5 approval layers, 3
-  environments.
-- 30 unit tests pass and 16 smoke checks pass on Node 20 and Node 24.
+- 1.399 lines of server-side JavaScript, 1.330 lines of client, 370 lines of CSS
+  and 834 lines of tests and scripts, across 65 tracked files.
+- 23 route handlers behind a session, plus one key-gated route for machine
+  callers. 4 roles, 18 named permissions, 5 approval layers, 3 environments.
+- 38 unit tests pass and 25 smoke checks pass on Node 20 and Node 24.
 - One runtime dependency: `express`. Sessions, password hashing, API key digests
   and the token bucket are all `node:crypto`, so the supply chain a reviewer has
-  to trust is short on purpose.
+  to trust is short on purpose. The browser gets no third-party script either:
+  the charts are SVG drawn in `public/js/charts.js`.
 
 ## What is deliberately absent
 
@@ -104,8 +131,13 @@ data/                            synthetic fixtures produced by npm run seed
 - **No database.** The production system had one. A JSON store with atomic
   rename keeps this readable and reviewable; the guards, not the storage engine,
   are the point.
-- **No UI polish.** The board exists to show a refusal next to the card that
-  caused it. It is not a design portfolio piece.
+- **No invented numbers on screen.** The dashboard's success rate, drift count
+  and deploy percentiles are computed from `data/*.json` on every request. Change
+  a record and the figure moves; that is the difference between a console and a
+  mockup.
+- **No UI framework.** The console is hand-written CSS and ES modules with no
+  build step, because a reviewer should be able to read the file the browser
+  runs. It is dense on purpose — it is an operator's tool, not a design piece.
 
 ## Licence
 

@@ -17,6 +17,25 @@ async function main() {
         product: "qa@example.com", architecture: "qa@example.com", _last: "qa@example.com" },
       revision: 5, watermarks: [], history: [] },
   ] }));
+  const env = (v) => ({ version: v, deployedAt: "2026-10-08T03:00:00.000Z" });
+  fs.writeFileSync(path.join(dir, "services.json"), JSON.stringify({ services: [
+    { id: "ledger", name: "ledger-service", project: "payments", artifact: "jar",
+      envs: { sit: env("2.4.1"), uat: env("2.4.0"), prod: env("2.4.0") } },
+    { id: "portal", name: "portal-service", project: "digital", artifact: "web",
+      envs: { sit: env("1.0.0"), uat: null, prod: null } },
+  ] }));
+  fs.writeFileSync(path.join(dir, "deployments.json"), JSON.stringify({ deployments: [
+    { id: "d1", at: "2026-10-08T03:00:00.000Z", env: "sit", service: "ledger", version: "v2.4.1",
+      actor: "dev@example.com", result: "success", durationSeconds: 90 },
+    { id: "d2", at: "2026-10-07T03:00:00.000Z", env: "sit", service: "portal", version: "v1.0.0",
+      actor: "dev@example.com", result: "success", durationSeconds: 120 },
+    { id: "d3", at: "2026-10-06T03:00:00.000Z", env: "uat", service: "ledger", version: "v2.4.0",
+      actor: "ops@example.com", result: "failed", durationSeconds: 30 },
+  ] }));
+  fs.writeFileSync(path.join(dir, "secrets.json"), JSON.stringify({ secrets: [
+    { path: "sit/payments/ledger-db", name: "ledger-db", type: "database", env: "sit",
+      project: "payments", version: 2, updatedAt: "2026-01-01T00:00:00.000Z", rotationDays: 90 },
+  ] }));
 
   const { buildRecord } = require("../src/auth/JsonAuthProvider.js");
   const config = {
@@ -112,6 +131,60 @@ async function main() {
       body: JSON.stringify({ env: "uat", releaseTag: "v1.0.0" }),
     });
     assert.equal(bad.status, 401);
+  });
+
+  ok("the console reads need a session", () => call("GET", "/api/overview", { expect: 401 }));
+
+  ok("whoami carries the role's permissions", async () => {
+    const r = await call("GET", "/api/auth/whoami", { as: "dev", expect: 200 });
+    assert.ok(r.json.permissions.includes("approval:grant:team"));
+    assert.ok(!r.json.permissions.includes("approval:grant:engineering"), "dev can sign the engineering layer");
+  });
+
+  ok("the dashboard derives its numbers instead of storing them", async () => {
+    const r = await call("GET", "/api/overview", { as: "dev", expect: 200 });
+    assert.equal(r.json.stats.services, 2);
+    assert.equal(r.json.stats.successRate, 66.7);
+    assert.equal(r.json.stats.drifted, 2);
+    assert.equal(r.json.stats.neverPromoted, 1);
+    assert.equal(r.json.frequency.length, 12);
+    assert.equal(r.json.frequency.reduce((n, b) => n + b.total, 0), 3);
+  });
+
+  ok("a project filter cannot leak another project's rows", async () => {
+    const r = await call("GET", "/api/overview?project=payments", { as: "dev", expect: 200 });
+    assert.equal(r.json.stats.services, 1);
+    assert.ok(r.json.versions.every((v) => v.project === "payments"));
+  });
+
+  ok("the release plan lists drift, and the reason for every block", async () => {
+    const r = await call("GET", "/api/plans", { as: "dev", expect: 200 });
+    assert.deepEqual(r.json.plan.map((p) => p.service), ["portal", "ledger"], "blocked rows sort first");
+    assert.deepEqual(r.json.plan[0].blockers, ["no ticket to trace this change to"]);
+    assert.equal(r.json.plan[1].gate, "ready");
+  });
+
+  ok("deployment filters narrow without inventing rows", async () => {
+    const all = await call("GET", "/api/deployments", { as: "dev", expect: 200 });
+    assert.equal(all.json.total, 3);
+    const prod = await call("GET", "/api/deployments?env=prod", { as: "dev", expect: 200 });
+    assert.equal(prod.json.total, 0);
+  });
+
+  ok("reading secret paths is a separate right from reading releases", async () => {
+    const denied = await call("GET", "/api/secrets", { as: "dev", expect: 403 });
+    assert.equal(denied.json.needs, "secret:read");
+    const r = await call("GET", "/api/secrets", { as: "ops", expect: 200 });
+    assert.equal(r.json.secrets[0].overdue, true);
+    assert.ok(!("value" in r.json.secrets[0]), "a secret value reached the API");
+  });
+
+  ok("the account directory is admin-only", () => call("GET", "/api/users", { as: "ops", expect: 403 }));
+
+  ok("health reports what the store actually parsed", async () => {
+    const r = await call("GET", "/api/health", { as: "ops", expect: 200 });
+    assert.equal(r.json.collections.deployments, 3);
+    assert.equal(r.json.collections.services, 2);
   });
 
   ok("the audit trail recorded the refusals too", async () => {

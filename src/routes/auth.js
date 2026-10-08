@@ -2,6 +2,7 @@
 
 const express = require("express");
 const { COOKIE, sign } = require("../middleware/auth.js");
+const { permissionsFor } = require("../middleware/rbac.js");
 
 const MAX_AGE_MS = 8 * 60 * 60 * 1000;
 
@@ -38,7 +39,12 @@ function build({ auth, secret, audit, limiter }) {
     res.json({ ok: true });
   });
 
-  router.get("/whoami", (req, res) => res.json(req.principal || null));
+  // The console renders from this list rather than from a copy of the role
+  // table, so a permission granted server-side shows up without a second edit.
+  router.get("/whoami", (req, res) => {
+    if (!req.principal) return res.json(null);
+    res.json({ ...req.principal, permissions: permissionsFor(req.principal.role) });
+  });
   return router;
 }
 

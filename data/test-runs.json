@@ -1,0 +1,103 @@
+{
+  "testRuns": [
+    {
+      "id": "run-1200",
+      "service": "ledger",
+      "suite": "api-regression",
+      "env": "uat",
+      "total": 18,
+      "passed": 18,
+      "durationSeconds": 90,
+      "at": "2026-10-08T00:00:00.000Z",
+      "device": null
+    },
+    {
+      "id": "run-1201",
+      "service": "reconciliation",
+      "suite": "api-regression",
+      "env": "sit",
+      "total": 23,
+      "passed": 23,
+      "durationSeconds": 113,
+      "at": "2026-10-07T17:00:00.000Z",
+      "device": null
+    },
+    {
+      "id": "run-1202",
+      "service": "settlement",
+      "suite": "api-regression",
+      "env": "sit",
+      "total": 28,
+      "passed": 25,
+      "durationSeconds": 136,
+      "at": "2026-10-07T10:00:00.000Z",
+      "device": null
+    },
+    {
+      "id": "run-1203",
+      "service": "statements",
+      "suite": "api-regression",
+      "env": "sit",
+      "total": 33,
+      "passed": 33,
+      "durationSeconds": 159,
+      "at": "2026-10-07T03:00:00.000Z",
+      "device": null
+    },
+    {
+      "id": "run-1204",
+      "service": "limit-engine",
+      "suite": "api-regression",
+      "env": "uat",
+      "total": 38,
+      "passed": 38,
+      "durationSeconds": 182,
+      "at": "2026-10-06T20:00:00.000Z",
+      "device": null
+    },
+    {
+      "id": "run-1205",
+      "service": "fee-calculator",
+      "suite": "api-regression",
+      "env": "sit",
+      "total": 43,
+      "passed": 43,
+      "durationSeconds": 205,
+      "at": "2026-10-06T13:00:00.000Z",
+      "device": null
+    },
+    {
+      "id": "run-1206",
+      "service": "portal",
+      "suite": "portal-journey",
+      "env": "sit",
+      "total": 18,
+      "passed": 18,
+      "durationSeconds": 228,
+      "at": "2026-10-06T06:00:00.000Z",
+      "device": null
+    },
+    {
+      "id": "run-1207",
+      "service": "auth",
+      "suite": "portal-journey",
+      "env": "sit",
+      "total": 23,
+      "passed": 23,
+      "durationSeconds": 251,
+      "at": "2026-10-05T23:00:00.000Z",
+      "device": null
+    },
+    {
+      "id": "run-1208",
+      "service": "notification",
+      "suite": "api-regression",
+      "env": "uat",
+      "total": 28,
+      "passed": 25,
+      "durationSeconds": 274,
+      "at": "2026-10-05T16:00:00.000Z",
+      "device": null
+    }
+  ]
+}

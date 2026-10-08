@@ -14,10 +14,26 @@ const LADDER = ["sit", "uat", "prod"];
 const REQUIRED_PREDECESSOR = { sit: null, uat: "sit", prod: "uat" };
 
 class PromotionService {
-  constructor({ ledger, audit, clock }) {
-    this.ledger = ledger;
+  constructor({ repo, ledger, audit, clock }) {
+    this.repo = repo || null;
     this.audit = audit;
     this.clock = clock || (() => new Date().toISOString());
+    this.ledger = ledger || [];
+    // The ladder has to survive the control plane being restarted during its own
+    // deploy, so the ledger is loaded rather than assumed empty.
+    this.loaded = this.repo
+      ? this.repo.read("promotions", { ledger: [] }).then((r) => { this.ledger = r.ledger.slice(); })
+      : Promise.resolve();
+  }
+
+  async record(entry) {
+    // Load first: a write that lands before the stored ledger is read would be
+    // overwritten by that read.
+    await this.loaded;
+    this.ledger.push(entry);
+    if (this.repo) await this.repo.write("promotions", { ledger: this.ledger });
+    await this.audit.write({ kind: "promotion", ...entry });
+    return entry;
   }
 
   ran(tag, env) {
@@ -25,6 +41,7 @@ class PromotionService {
   }
 
   async promote(ticket, env, actor) {
+    await this.loaded;
     if (!LADDER.includes(env)) throw new Rejected("unknown-env", `no environment ${env}`);
     if (!isTagged(ticket)) throw new Rejected("untagged", "promotion needs a release tag");
     if (ticket.phase !== "merged" && ticket.phase !== "deployed") {
@@ -46,17 +63,12 @@ class PromotionService {
     }
 
     const entry = { releaseTag: tag, env, actor, at: this.clock(), result: "success" };
-    this.ledger.push(entry);
-    await this.audit.write({ kind: "promotion", ...entry });
-    return entry;
+    return this.record(entry);
   }
 
   // A failed deploy is still evidence - it is what stops the next rung.
   async recordFailure(ticket, env, actor, reason) {
-    const entry = { releaseTag: ticket.releaseTag, env, actor, at: this.clock(), result: "failed", reason };
-    this.ledger.push(entry);
-    await this.audit.write({ kind: "promotion", ...entry });
-    return entry;
+    return this.record({ releaseTag: ticket.releaseTag, env, actor, at: this.clock(), result: "failed", reason });
   }
 
   status(tag) {

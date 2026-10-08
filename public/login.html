@@ -3,23 +3,31 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sign in — release board</title>
+  <title>Sign in — release control plane</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="stylesheet" href="/css/app.css">
+  <script type="module" src="/js/login.js"></script>
 </head>
-<body class="narrow">
-  <main class="card">
-    <h1>Release board</h1>
-    <p class="lede">Sign in with a board account. Roles decide what you can move, not just what you can see.</p>
-    <form id="login" autocomplete="off">
+<body class="auth">
+  <main class="auth-card">
+    <div class="brand">
+      <span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V5"/><path d="M6.5 10.5 12 5l5.5 5.5"/><path d="M5 20h14"/></svg></span>
+      <span class="brand-text">
+        <b>Release control plane</b>
+        <em>board-driven deploys</em>
+      </span>
+    </div>
+    <h1>Sign in</h1>
+    <p class="dim">Roles decide what you can move, not only what you can see.</p>
+    <form data-login autocomplete="off">
       <label for="email">Email</label>
-      <input id="email" name="email" type="email" required autofocus>
+      <input id="email" name="email" type="email" required autocomplete="username">
       <label for="password">Password</label>
-      <input id="password" name="password" type="password" required>
-      <button type="submit">Sign in</button>
-      <p id="error" class="error" role="alert" hidden></p>
+      <input id="password" name="password" type="password" required autocomplete="current-password">
+      <button class="btn primary block" type="submit">Sign in</button>
+      <p class="callout bad" role="alert" data-error hidden></p>
     </form>
+    <p class="fineprint">Demo accounts are created by <code>npm run seed</code> and share <code>DEMO_PASSWORD</code>. The reference user file ships with a password nobody can log in with.</p>
   </main>
-  <script src="/js/app.js"></script>
-  <script>startLogin();</script>
 </body>
 </html>

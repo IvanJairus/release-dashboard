@@ -1,0 +1,32 @@
+{
+  "projects": [
+    {
+      "id": "payments",
+      "displayName": "Payments Core",
+      "createdAt": "2026-05-13T00:00:00.000Z",
+      "repos": 7,
+      "pipelines": 3
+    },
+    {
+      "id": "retail",
+      "displayName": "Retail Channels",
+      "createdAt": "2026-03-27T00:00:00.000Z",
+      "repos": 0,
+      "pipelines": 1
+    },
+    {
+      "id": "digital",
+      "displayName": "Digital Experience",
+      "createdAt": "2026-04-28T00:00:00.000Z",
+      "repos": 5,
+      "pipelines": 2
+    },
+    {
+      "id": "distribution",
+      "displayName": "Field Distribution",
+      "createdAt": "2025-09-12T00:00:00.000Z",
+      "repos": 1,
+      "pipelines": 2
+    }
+  ]
+}

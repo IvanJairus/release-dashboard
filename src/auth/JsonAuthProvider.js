@@ -39,6 +39,12 @@ class JsonAuthProvider {
     return this.users.get(String(email || "").toLowerCase()) || null;
   }
 
+  // Identity without material: the settings view shows who can act, and never
+  // needs the salt or the digest that proves they are who they say they are.
+  directory() {
+    return [...this.users.values()].map(({ email, role }) => ({ email, role }));
+  }
+
   async login(email, password) {
     const record = this.find(email);
     // A missing user still costs a hash so the timing does not announce which

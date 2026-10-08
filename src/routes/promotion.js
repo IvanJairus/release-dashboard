@@ -7,8 +7,11 @@ const { LADDER } = require("../services/PromotionService.js");
 function build({ tickets, promotion }) {
   const router = express.Router();
 
-  router.get("/", requirePermission("ticket:read"), (req, res) => {
-    res.json({ ladder: LADDER, ledger: promotion.ledger });
+  router.get("/", requirePermission("ticket:read"), async (req, res, next) => {
+    try {
+      await promotion.loaded;
+      res.json({ ladder: LADDER, ledger: promotion.ledger });
+    } catch (e) { next(e); }
   });
 
   /*

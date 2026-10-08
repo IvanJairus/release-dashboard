@@ -24,6 +24,11 @@ const PERMISSIONS = {
   "approval:grant:engineering": ["approver"],
   "audit:read": ["approver", "ops", "admin"],
   "key:rotate": ["admin"],
+  // Reading which version runs where is not sensitive; reading what a credential
+  // is called, and when it expires, is - so they are two names, not one.
+  "release:read": ["dev", "approver", "ops", "admin"],
+  "secret:read": ["ops", "admin"],
+  "user:read": ["admin"],
 };
 
 const ROLES = [...new Set(Object.values(PERMISSIONS).flat())];
@@ -38,10 +43,14 @@ function allows(role, permission) {
 // "approve" right would make the five-layer chain a formality.
 const approvalPermission = (layer) => `approval:grant:${layer}`;
 
+function permissionsFor(role) {
+  return Object.keys(PERMISSIONS).filter((p) => allows(role, p));
+}
+
 function missingApprovalsFor(role) {
   return Object.keys(PERMISSIONS)
     .filter((p) => p.startsWith("approval:grant:") && !allows(role, p))
     .map((p) => p.split(":").pop());
 }
 
-module.exports = { PERMISSIONS, ROLES, allows, approvalPermission, missingApprovalsFor };
+module.exports = { PERMISSIONS, ROLES, allows, approvalPermission, permissionsFor, missingApprovalsFor };

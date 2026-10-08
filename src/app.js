@@ -12,13 +12,16 @@ const { PromotionService } = require("./services/PromotionService.js");
 const { RateLimiter } = require("./middleware/rateLimiter.js");
 const { attachSession } = require("./middleware/auth.js");
 const { requireApiKey } = require("./middleware/apiKey.js");
+const { securityHeaders } = require("./middleware/headers.js");
 const { requestLogger, line } = require("./middleware/logger.js");
+const { OverviewService } = require("./services/OverviewService.js");
 const { Rejected } = require("./domain/ticket.js");
 
 const routes = {
   auth: require("./routes/auth.js"),
   tickets: require("./routes/tickets.js"),
   promotion: require("./routes/promotion.js"),
+  insights: require("./routes/insights.js"),
   events: require("./routes/events.js"),
   admin: require("./routes/admin.js"),
 };
@@ -31,10 +34,13 @@ function createApp(config) {
   const keys = new ApiKeyStore(config.apiKeyDigests);
   const auth = new JsonAuthProvider(config.users);
   const tickets = new TicketService({ repo, audit, events });
-  const promotion = new PromotionService({ ledger: [], audit });
+  const promotion = new PromotionService({ repo, audit });
+  const overview = new OverviewService({ repo });
+  const startedAt = Date.now();
 
   const app = express();
   app.disable("x-powered-by");
+  app.use(securityHeaders());
   app.use(express.json({ limit: "64kb" }));
   app.use(requestLogger());
   app.use(attachSession(config.sessionSecret));
@@ -43,6 +49,7 @@ function createApp(config) {
   app.use("/api/auth", routes.auth.build({ auth, secret: config.sessionSecret, audit, limiter }));
   app.use("/api/tickets", routes.tickets.build({ tickets, audit }));
   app.use("/api/promotions", routes.promotion.build({ tickets, promotion }));
+  app.use("/api", routes.insights.build({ overview, audit, events, auth, startedAt }));
   // The CI job posts its own progress; it is a machine caller and never gets a
   // session, so its routes are mounted behind the key rather than the cookie.
   app.use("/api/ci/deploy", requireApiKey(keys), (req, res, next) => {
@@ -61,7 +68,7 @@ function createApp(config) {
     res.status(500).json({ error: "internal error" });
   });
 
-  return { app, events, services: { tickets, promotion, audit, keys, limiter } };
+  return { app, events, services: { tickets, promotion, overview, audit, keys, limiter } };
 }
 
 module.exports = { createApp };

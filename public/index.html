@@ -3,29 +3,51 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Release board</title>
+  <title>Release control plane</title>
+  <meta name="description" content="Reference implementation of a release control plane: version drift, promotion gates, quality scans and an append-only audit trail.">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="stylesheet" href="/css/app.css">
+  <script type="module" src="/js/main.js"></script>
 </head>
 <body>
-  <header class="bar">
-    <span class="brand mono">release&nbsp;board</span>
-    <span id="who" class="mono dim"></span>
-    <span class="spacer"></span>
-    <span id="live" class="pill" aria-live="polite">connecting</span>
-    <button id="signout" class="ghost" type="button">Sign out</button>
-  </header>
+  <div class="app">
+    <aside class="side" aria-label="Primary">
+      <div class="brand">
+        <span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V5"/><path d="M6.5 10.5 12 5l5.5 5.5"/><path d="M5 20h14"/></svg></span>
+        <span class="brand-text">
+          <b>Release control plane</b>
+          <em>board-driven deploys</em>
+        </span>
+      </div>
 
-  <main>
-    <p class="hint mono">refusals are shown where they happen — a card that will not move says why</p>
-    <div id="board" class="board" aria-label="Release board"></div>
-    <section class="panel" aria-labelledby="ledger-h">
-      <h2 id="ledger-h">Release ledger</h2>
-      <p class="dim">Each rung needs a successful run below it, signed by someone other than the person who ran the rung before.</p>
-      <ul id="ledger" class="ledger mono"></ul>
-    </section>
-  </main>
+      <label class="scope" for="scope">
+        <span class="sr-only">Project</span>
+        <select id="scope" data-scope></select>
+      </label>
 
-  <script src="/js/app.js"></script>
-  <script>startBoard();</script>
+      <nav class="nav" data-nav aria-label="Views"></nav>
+
+      <div class="side-foot">
+        <div class="who" data-who></div>
+        <button class="link" type="button" data-signout>Sign out</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="top">
+        <div class="top-text">
+          <h1 data-title>Dashboard</h1>
+          <p data-subtitle class="dim"></p>
+        </div>
+        <span class="stream" data-stream role="status"><i aria-hidden="true"></i><span>connecting</span></span>
+        <button class="icon-btn" type="button" data-refresh title="Reload this view">
+          <span class="sr-only">Reload this view</span>
+        </button>
+      </header>
+      <div class="view" data-view tabindex="-1"></div>
+    </main>
+
+    <div class="toasts" data-toasts aria-live="polite"></div>
+  </div>
 </body>
 </html>

@@ -3,47 +3,337 @@
     {
       "id": "ledger",
       "name": "ledger-service",
+      "project": "payments",
       "stack": "maven",
       "artifact": "jar",
+      "repo": "payments/ledger",
       "owners": [
         "payments"
-      ]
+      ],
+      "envs": {
+        "sit": {
+          "version": "2.4.1",
+          "deployedAt": "2026-10-07T19:00:00.000Z"
+        },
+        "uat": {
+          "version": "2.4.0",
+          "deployedAt": "2026-10-04T00:00:00.000Z"
+        },
+        "prod": {
+          "version": "2.4.0",
+          "deployedAt": "2026-09-29T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "id": "reconciliation",
+      "name": "reconciliation-service",
+      "project": "payments",
+      "stack": "maven",
+      "artifact": "jar",
+      "repo": "payments/reconciliation",
+      "owners": [
+        "payments"
+      ],
+      "envs": {
+        "sit": {
+          "version": "2.4.1",
+          "deployedAt": "2026-10-06T19:00:00.000Z"
+        },
+        "uat": null,
+        "prod": null
+      }
+    },
+    {
+      "id": "settlement",
+      "name": "settlement-service",
+      "project": "payments",
+      "stack": "maven",
+      "artifact": "jar",
+      "repo": "payments/settlement",
+      "owners": [
+        "payments"
+      ],
+      "envs": {
+        "sit": {
+          "version": "2.3.9",
+          "deployedAt": "2026-10-05T19:00:00.000Z"
+        },
+        "uat": {
+          "version": "2.3.9",
+          "deployedAt": "2026-10-02T00:00:00.000Z"
+        },
+        "prod": {
+          "version": "2.3.8",
+          "deployedAt": "2026-09-27T00:00:00.000Z"
+        }
+      }
     },
     {
       "id": "statements",
-      "name": "statements-api",
+      "name": "statements-service",
+      "project": "retail",
       "stack": "gradle",
       "artifact": "jar",
+      "repo": "retail/statements",
       "owners": [
         "retail"
-      ]
+      ],
+      "envs": {
+        "sit": {
+          "version": "1.9.4",
+          "deployedAt": "2026-10-04T19:00:00.000Z"
+        },
+        "uat": {
+          "version": "1.9.2",
+          "deployedAt": "2026-10-01T00:00:00.000Z"
+        },
+        "prod": {
+          "version": "1.9.2",
+          "deployedAt": "2026-09-26T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "id": "limit-engine",
+      "name": "limit-engine-service",
+      "project": "retail",
+      "stack": "gradle",
+      "artifact": "jar",
+      "repo": "retail/limit-engine",
+      "owners": [
+        "retail"
+      ],
+      "envs": {
+        "sit": {
+          "version": "1.9.4",
+          "deployedAt": "2026-10-03T19:00:00.000Z"
+        },
+        "uat": {
+          "version": "1.9.4",
+          "deployedAt": "2026-09-30T00:00:00.000Z"
+        },
+        "prod": {
+          "version": "1.9.4",
+          "deployedAt": "2026-09-25T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "id": "fee-calculator",
+      "name": "fee-calculator-service",
+      "project": "retail",
+      "stack": "maven",
+      "artifact": "jar",
+      "repo": "retail/fee-calculator",
+      "owners": [
+        "retail"
+      ],
+      "envs": {
+        "sit": {
+          "version": "0.14.2",
+          "deployedAt": "2026-10-02T19:00:00.000Z"
+        },
+        "uat": {
+          "version": "0.14.1",
+          "deployedAt": "2026-09-29T00:00:00.000Z"
+        },
+        "prod": {
+          "version": "0.14.1",
+          "deployedAt": "2026-09-24T00:00:00.000Z"
+        }
+      }
     },
     {
       "id": "portal",
-      "name": "customer-portal",
+      "name": "portal-service",
+      "project": "digital",
       "stack": "npm",
       "artifact": "web",
+      "repo": "digital/portal",
       "owners": [
         "digital"
-      ]
+      ],
+      "envs": {
+        "sit": {
+          "version": "3.11.0",
+          "deployedAt": "2026-10-01T19:00:00.000Z"
+        },
+        "uat": {
+          "version": "3.10.4",
+          "deployedAt": "2026-09-28T00:00:00.000Z"
+        },
+        "prod": {
+          "version": "3.10.4",
+          "deployedAt": "2026-09-23T00:00:00.000Z"
+        }
+      }
     },
     {
-      "id": "field-app",
-      "name": "field-app-android",
+      "id": "auth",
+      "name": "auth-service",
+      "project": "digital",
+      "stack": "npm",
+      "artifact": "web",
+      "repo": "digital/auth",
+      "owners": [
+        "digital"
+      ],
+      "envs": {
+        "sit": {
+          "version": "3.11.0",
+          "deployedAt": "2026-09-30T19:00:00.000Z"
+        },
+        "uat": null,
+        "prod": null
+      }
+    },
+    {
+      "id": "notification",
+      "name": "notification-service",
+      "project": "digital",
+      "stack": "gradle",
+      "artifact": "jar",
+      "repo": "digital/notification",
+      "owners": [
+        "digital"
+      ],
+      "envs": {
+        "sit": {
+          "version": "1.2.105",
+          "deployedAt": "2026-09-29T19:00:00.000Z"
+        },
+        "uat": {
+          "version": "1.2.105",
+          "deployedAt": "2026-09-26T00:00:00.000Z"
+        },
+        "prod": {
+          "version": "1.2.103",
+          "deployedAt": "2026-09-21T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "id": "content",
+      "name": "content-service",
+      "project": "digital",
+      "stack": "npm",
+      "artifact": "web",
+      "repo": "digital/content",
+      "owners": [
+        "digital"
+      ],
+      "envs": {
+        "sit": {
+          "version": "1.2.94",
+          "deployedAt": "2026-10-07T19:00:00.000Z"
+        },
+        "uat": {
+          "version": "1.2.90",
+          "deployedAt": "2026-10-04T00:00:00.000Z"
+        },
+        "prod": {
+          "version": "1.2.90",
+          "deployedAt": "2026-09-29T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "id": "field-app-android",
+      "name": "field-app-android-service",
+      "project": "distribution",
       "stack": "gradle",
       "artifact": "apk",
+      "repo": "distribution/field-app-android",
       "owners": [
         "distribution"
-      ]
+      ],
+      "envs": {
+        "sit": {
+          "version": "5.7.2",
+          "deployedAt": "2026-10-06T19:00:00.000Z"
+        },
+        "uat": {
+          "version": "5.7.1",
+          "deployedAt": "2026-10-03T00:00:00.000Z"
+        },
+        "prod": {
+          "version": "5.7.1",
+          "deployedAt": "2026-09-28T00:00:00.000Z"
+        }
+      }
     },
     {
       "id": "field-app-ios",
-      "name": "field-app-ios",
+      "name": "field-app-ios-service",
+      "project": "distribution",
       "stack": "xcode",
       "artifact": "ipa",
+      "repo": "distribution/field-app-ios",
       "owners": [
         "distribution"
-      ]
+      ],
+      "envs": {
+        "sit": {
+          "version": "5.7.2",
+          "deployedAt": "2026-10-05T19:00:00.000Z"
+        },
+        "uat": {
+          "version": "5.7.2",
+          "deployedAt": "2026-10-02T00:00:00.000Z"
+        },
+        "prod": null
+      }
+    },
+    {
+      "id": "device-enrolment",
+      "name": "device-enrolment-service",
+      "project": "distribution",
+      "stack": "maven",
+      "artifact": "jar",
+      "repo": "distribution/device-enrolment",
+      "owners": [
+        "distribution"
+      ],
+      "envs": {
+        "sit": {
+          "version": "0.9.8",
+          "deployedAt": "2026-10-04T19:00:00.000Z"
+        },
+        "uat": {
+          "version": "0.9.8",
+          "deployedAt": "2026-10-01T00:00:00.000Z"
+        },
+        "prod": {
+          "version": "0.9.8",
+          "deployedAt": "2026-09-26T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "id": "route-planner",
+      "name": "route-planner-service",
+      "project": "distribution",
+      "stack": "python",
+      "artifact": "wheel",
+      "repo": "distribution/route-planner",
+      "owners": [
+        "distribution"
+      ],
+      "envs": {
+        "sit": {
+          "version": "0.4.1",
+          "deployedAt": "2026-10-03T19:00:00.000Z"
+        },
+        "uat": {
+          "version": "0.3.9",
+          "deployedAt": "2026-09-30T00:00:00.000Z"
+        },
+        "prod": {
+          "version": "0.3.9",
+          "deployedAt": "2026-09-25T00:00:00.000Z"
+        }
+      }
     }
   ]
 }

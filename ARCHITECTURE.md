@@ -110,3 +110,21 @@ new ticket (revision + 1) -> atomic file write -> audit "transition"
    v
 EventBus.publish -> every open board re-reads
 ```
+
+## Shape of a read
+
+```
+browser (one project filter)
+   |
+   v
+session -> rbac permission -> OverviewService.collections(project)
+   |                                        |
+   |                            one loader decides what belongs
+   v                                        v
+stats / versions / frequency / plan  <-  derived, never stored
+```
+
+**Why it is drawn separately.** Every figure the console shows is a calculation
+over the same records the write path produced. A stored summary would be a second
+truth, and the first thing a reviewer asks about a dashboard is whether the number
+on it can disagree with the ledger underneath.
