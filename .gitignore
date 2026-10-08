@@ -1,0 +1,6 @@
+node_modules/
+data/audit-log.jsonl
+data/*.tmp
+*.log
+.env
+.DS_Store

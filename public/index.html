@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Release board</title>
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+  <header class="bar">
+    <span class="brand mono">release&nbsp;board</span>
+    <span id="who" class="mono dim"></span>
+    <span class="spacer"></span>
+    <span id="live" class="pill" aria-live="polite">connecting</span>
+    <button id="signout" class="ghost" type="button">Sign out</button>
+  </header>
+
+  <main>
+    <p class="hint mono">refusals are shown where they happen — a card that will not move says why</p>
+    <div id="board" class="board" aria-label="Release board"></div>
+    <section class="panel" aria-labelledby="ledger-h">
+      <h2 id="ledger-h">Release ledger</h2>
+      <p class="dim">Each rung needs a successful run below it, signed by someone other than the person who ran the rung before.</p>
+      <ul id="ledger" class="ledger mono"></ul>
+    </section>
+  </main>
+
+  <script src="/js/app.js"></script>
+  <script>startBoard();</script>
+</body>
+</html>

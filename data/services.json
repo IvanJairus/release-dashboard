@@ -1,0 +1,49 @@
+{
+  "services": [
+    {
+      "id": "ledger",
+      "name": "ledger-service",
+      "stack": "maven",
+      "artifact": "jar",
+      "owners": [
+        "payments"
+      ]
+    },
+    {
+      "id": "statements",
+      "name": "statements-api",
+      "stack": "gradle",
+      "artifact": "jar",
+      "owners": [
+        "retail"
+      ]
+    },
+    {
+      "id": "portal",
+      "name": "customer-portal",
+      "stack": "npm",
+      "artifact": "web",
+      "owners": [
+        "digital"
+      ]
+    },
+    {
+      "id": "field-app",
+      "name": "field-app-android",
+      "stack": "gradle",
+      "artifact": "apk",
+      "owners": [
+        "distribution"
+      ]
+    },
+    {
+      "id": "field-app-ios",
+      "name": "field-app-ios",
+      "stack": "xcode",
+      "artifact": "ipa",
+      "owners": [
+        "distribution"
+      ]
+    }
+  ]
+}

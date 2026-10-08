@@ -1,0 +1,78 @@
+{
+  "tickets": [
+    {
+      "id": "471",
+      "title": "feat: nightly ledger reconciliation",
+      "service": "ledger",
+      "phase": "intake",
+      "branch": null,
+      "mergeRequest": null,
+      "releaseTag": null,
+      "approvals": {},
+      "revision": 1,
+      "watermarks": [],
+      "history": [
+        {
+          "action": "created",
+          "actor": "dev@example.com",
+          "at": "2026-03-02T09:10:00.000Z"
+        }
+      ]
+    },
+    {
+      "id": "468",
+      "title": "fix: timeout on statement export",
+      "service": "statements",
+      "phase": "in-review",
+      "branch": "fix/468-statement-timeout",
+      "mergeRequest": "mr/118",
+      "releaseTag": null,
+      "approvals": {
+        "team": "dev@example.com",
+        "business": "qa@example.com",
+        "product": "qa@example.com",
+        "architecture": "qa@example.com",
+        "_last": "qa@example.com"
+      },
+      "revision": 6,
+      "watermarks": [
+        "openMergeRequest@2"
+      ],
+      "history": [
+        {
+          "action": "created",
+          "actor": "dev@example.com",
+          "at": "2026-03-04T02:15:00.000Z"
+        }
+      ]
+    },
+    {
+      "id": "455",
+      "title": "chore: portal bundle budget",
+      "service": "portal",
+      "phase": "merged",
+      "branch": "chore/455-budget",
+      "mergeRequest": "mr/101",
+      "releaseTag": "v2.4.1",
+      "approvals": {
+        "team": "dev@example.com",
+        "business": "qa@example.com",
+        "product": "qa@example.com",
+        "architecture": "qa@example.com",
+        "engineering": "ops@example.com",
+        "_last": "ops@example.com"
+      },
+      "revision": 9,
+      "watermarks": [
+        "merge@9"
+      ],
+      "history": [
+        {
+          "action": "created",
+          "actor": "dev@example.com",
+          "at": "2026-02-27T08:00:00.000Z"
+        }
+      ]
+    }
+  ]
+}

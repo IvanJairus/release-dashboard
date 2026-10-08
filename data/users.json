@@ -1,0 +1,28 @@
+{
+  "users": [
+    {
+      "email": "dev@example.com",
+      "role": "dev",
+      "salt": "eb9486bddc8e55199e8fceba388a793b",
+      "hash": "e07e08eabf65ce1b4b20ce6f1f3944d58b14e4a92cf31bf17bf6455ed2eceafa1e8c91fd9bfdf6b6a248114e438e88603e2664feafa586dc160c5a17f5354ef2"
+    },
+    {
+      "email": "qa@example.com",
+      "role": "approver",
+      "salt": "28b1baa0582d29772c643542079cca2f",
+      "hash": "91cea1e1c8f2cb2e662f20aa8ddd1e367819b3afd3ceb08c099908f72b748e059e52e09723d092db932e22c3dadfde004aa3237724aeef4d1291679b19107bdb"
+    },
+    {
+      "email": "ops@example.com",
+      "role": "ops",
+      "salt": "bc8cbd998cefb151132ce0222f323f68",
+      "hash": "fc0f5fbf8f5c1c59eb1931b0d1dc4829f644e5edb641b7d99e42efb2dc4a15f586199d3892f12aa7b68861b8bb052a263934dee8249d1fa4cde8fd5dcdbbc94d"
+    },
+    {
+      "email": "admin@example.com",
+      "role": "admin",
+      "salt": "d773e18660f141f83d1f8f4eb02b24c4",
+      "hash": "4cd6844996eaaad043e58db09cbeed94c4c213e3626e06cacf393f4d0fc4b066daab2c74ce0d4b7427b49bb74f6c91dbac5243f1ed58355c67ed3c4396ecea9b"
+    }
+  ]
+}
