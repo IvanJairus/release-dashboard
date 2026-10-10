@@ -54,8 +54,8 @@ export async function render(ctx) {
           ["Repository", `${row.project}/${row.id}`],
           ["Artifact", `${row.artifact} · ${row.artifact === "web" ? "bundle" : "container image"}`],
           ["SonarQube gate", gate ? gate.sonar : "not scanned"],
-          ["Coverage", gate ? `${gate.coverage}%` : "—"],
-          ["Critical image findings", gate ? gate.trivyCritical : "—"],
+          ["Coverage", gate ? `${gate.coverage}%` : "n/a"],
+          ["Critical image findings", gate ? gate.trivyCritical : "n/a"],
           ["UAT running since", stamp(row.deployedAt)],
         ]));
         tr.setAttribute("aria-expanded", "true");

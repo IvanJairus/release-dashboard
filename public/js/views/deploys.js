@@ -39,7 +39,7 @@ async function history(ctx) {
   return make("div", "stack", [
     callout("", "info", make("span", null, [
       make("b", null, "Deployment history. "),
-      "Every row was written by the promotion endpoint or by a pipeline presenting an API key — the board has no separate record of its own.",
+      "Every row was written by the promotion endpoint or by a pipeline presenting an API key. The board keeps no separate record.",
     ])),
     filters([
       select("Environment", [["all", "All environments"], ...ENVS], env, (v) => ctx.setQ({ env: v })),
@@ -75,7 +75,7 @@ async function promote(ctx) {
   return make("div", "stack", [
     callout("warn", "alert", make("span", null, [
       "A rung opens only when the same release tag has already succeeded one level below, and never to the person who ran that lower rung. ",
-      make("b", null, "The form below cannot bypass that — try it and the refusal is the point."),
+      make("b", null, "The form below cannot bypass that. Try it, and the refusal is the point."),
     ])),
     panel("Promote a release tag", {
       sub: ladder.join(" → "),

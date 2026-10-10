@@ -1,7 +1,7 @@
 # Architecture
 
 Six decisions, each with what it bought and what it cost. Written for the person
-who has to maintain this after I have moved on — which is the same person who
+who has to maintain this after I have moved on, which is the same person who
 would otherwise inherit a pile of conventions nobody can name.
 
 ## 1. The ticket is the state, not the database row
@@ -35,7 +35,7 @@ instead of mysterious.
 
 **Decision.** `approval:grant:team`, `…business`, `…product`, `…architecture`,
 `…engineering` are distinct rights, and the layer a person may sign is decided by
-their role — no role holds all five, and the developer role holds only `team`.
+their role. No role holds all five, and the developer role holds only `team`.
 
 **Why it was chosen.** A single "can approve" right turns a five-layer chain into
 a formality: one account signs everything and the audit trail looks compliant.
@@ -45,7 +45,7 @@ policy document.
 **What it costs.** Real releases need five humans, so a small team feels it. The
 mitigation is that the layers are named after responsibilities, not job titles, so
 one person holding two responsibilities shows up honestly in the audit as two
-different grants — and the last-approver-cannot-merge rule still applies.
+different grants, and the last-approver-cannot-merge rule still applies.
 
 ## 4. The ladder proves the artifact, not the ticket
 
@@ -89,7 +89,7 @@ serve an unauthenticated board, and the outage that follows a corrupt state file
 is indistinguishable from a data-loss incident.
 
 **What it costs.** Convenience. `npm start` without environment variables fails,
-and the error names the missing variables — which is the intended behaviour, in a
+and the error names the missing variables. That is the intended behaviour, in a
 demo repo as much as in production.
 
 ## Shape of a request

@@ -73,7 +73,7 @@ export function make(tag, className, children, attrs) {
 export const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 export function stamp(iso) {
-  if (!iso) return "—";
+  if (!iso) return "never";
   const d = new Date(iso);
   const p = (n) => String(n).padStart(2, "0");
   return `${p(d.getUTCDate())} ${MONTHS[d.getUTCMonth()]}, ${p(d.getUTCHours())}:${p(d.getUTCMinutes())}`;
@@ -90,7 +90,7 @@ export function ago(iso, now = Date.now()) {
 }
 
 export function duration(seconds) {
-  if (seconds === null || seconds === undefined) return "—";
+  if (seconds === null || seconds === undefined) return "n/a";
   if (seconds < 60) return `${seconds}s`;
   return `${Math.floor(seconds / 60)}m ${String(seconds % 60).padStart(2, "0")}s`;
 }
@@ -175,7 +175,7 @@ export function table(columns, rows, { onRow, scroll } = {}) {
       const value = c.render(row);
       const td = make("td", c.className);
       if (value instanceof Node) td.appendChild(value);
-      else if (value === undefined || value === null) td.textContent = "—";
+      else if (value === undefined || value === null) td.textContent = "n/a";
       else td.textContent = String(value);
       return td;
     }), onRow ? { "aria-expanded": "false", tabindex: "0" } : undefined);
@@ -190,7 +190,7 @@ export function table(columns, rows, { onRow, scroll } = {}) {
 
 export function detailRow(cols) {
   return make("tr", "detail", make("td", null, make("dl", null, cols.flatMap(([k, v]) => [
-    make("dt", null, k), make("dd", null, v ?? "—"),
+    make("dt", null, k), make("dd", null, v ?? "n/a"),
   ]))));
 }
 

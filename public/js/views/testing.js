@@ -14,7 +14,7 @@ export async function render(ctx) {
     { head: "Suite", className: "name", render: (r) => r.suite },
     { head: "Service", render: (r) => r.service },
     { head: "Environment", render: (r) => badge(r.env, r.env === "uat" ? "warn" : "info") },
-    { head: "Device", className: "mono", render: (r) => r.device || "—" },
+    { head: "Device", className: "mono", render: (r) => r.device || "n/a" },
     { head: "Cases", className: "num", render: (r) => r.total },
     { head: "Passed", className: "num", render: (r) => r.passed },
     { head: "Pass rate", render: (r) => passBar(r.passed, r.total) },

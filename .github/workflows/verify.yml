@@ -13,6 +13,9 @@ jobs:
       - uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4.0.3
         with:
           node-version: 20
+      # Teks yang sampai ke pembaca diperiksa, termasuk bentuk escape Unicode di
+      # JS yang tidak terlihat oleh grep biasa.
+      - run: node scripts/assert-copy.mjs --strict
       - run: npm install --no-audit --no-fund
       - run: npm test
       # The HTTP layer is only believed once something has actually answered a

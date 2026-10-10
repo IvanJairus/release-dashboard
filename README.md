@@ -1,14 +1,14 @@
-# Release control plane — reference implementation
+# Release control plane, reference implementation
 
 A small web application that turns an issue board into a deployment pipeline's
 control surface: cards carry the release state, humans approve by layer, machines
-deploy by environment, and every decision — including the ones that were refused
-— ends up in an append-only audit file.
+deploy by environment, and every decision ends up in an append-only audit file,
+including the ones that were refused.
 
 This is a **reconstruction** of a system I designed and ran in production, not a
 copy of it. The production code is not published. Everything here was written
-again from the design, with invented data, so the parts worth reviewing — the
-guards, the state machine, the permission model — can be read and run.
+again from the design, with invented data, so the parts worth reviewing, the guards, the state
+machine and the permission model, can be read and run.
 
 ## The problem in one paragraph
 
@@ -17,7 +17,7 @@ did. When those two are separate systems, the board becomes theatre: a card move
 to "Deployed" because someone remembered to move it, and the release calendar is
 a spreadsheet. This app makes the board the authoritative record by refusing to
 let a card advance unless the thing that justifies the move is present in the
-card itself — a merge request for a merge, a release tag for a deploy, five named
+card itself: a merge request for a merge, a release tag for a deploy, five named
 approvals before either.
 
 ## Run it
@@ -52,7 +52,7 @@ the server from the record files on request.
 | Board | which ticket is stuck, and the guard's exact refusal text next to it |
 | Deploys | history, a promotion form that cannot skip a rung, and the live event stream |
 | Pre-UAT | the release plan, generated from version drift alone, with a reason per block |
-| Scans | quality gates and image findings — the inputs the plan refuses to promote |
+| Scans | quality gates and image findings, the inputs the plan refuses to promote |
 | Testing | recorded suites and their pass rate |
 | Secrets | vault paths, rotation age, and no way to read a value |
 | Settings | projects, the account directory, key rotation, the audit trail, self-reported health |
@@ -137,7 +137,7 @@ data/                            synthetic fixtures produced by npm run seed
   mockup.
 - **No UI framework.** The console is hand-written CSS and ES modules with no
   build step, because a reviewer should be able to read the file the browser
-  runs. It is dense on purpose — it is an operator's tool, not a design piece.
+  runs. It is dense because it is an operator's tool, not a design piece.
 
 ## Licence
 

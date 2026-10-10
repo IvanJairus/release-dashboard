@@ -1,7 +1,7 @@
 import { api, scoped } from "../api.js";
 import { make, panel, badge, table, metric, callout, stamp, duration } from "../ui.js";
 
-export const meta = { title: "Secrets", subtitle: "Vault paths, rotation age and who last touched them — never values" };
+export const meta = { title: "Secrets", subtitle: "Vault paths, rotation age and who last touched them. Never values." };
 
 export async function render(ctx) {
   let secrets;
@@ -11,11 +11,11 @@ export async function render(ctx) {
     if (err.status !== 403) throw err;
     return make("div", "stack", [
       callout("bad", "shield", make("span", null, [
-        make("b", null, `403 — this view needs secret:read. `),
+        make("b", null, `403: this view needs secret:read. `),
         `Your role (${ctx.me.role}) is not in that list, and the server said so rather than returning an empty table. Reading credential paths is a different decision from reading a version number, so it is a different permission name.`,
       ])),
       panel("What your role can read", {
-        body: make("p", "dim", "Deployments, versions, scans, test runs and the board. Everything on this page is derived from the same records, so a developer is not blind — they simply cannot enumerate what a vault holds."),
+        body: make("p", "dim", "Deployments, versions, scans, test runs and the board. Everything on this page is derived from the same records, so a developer is not blind. They simply cannot enumerate what a vault holds."),
       }),
     ]);
   }

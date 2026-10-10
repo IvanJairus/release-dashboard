@@ -45,7 +45,7 @@ async function access(ctx) {
   } catch (err) {
     if (err.status !== 403) throw err;
     return callout("bad", "shield", make("span", null, [
-      make("b", null, "403 — user:read belongs to admin. "),
+      make("b", null, "403: user:read belongs to admin. "),
       `You are signed in as ${ctx.me.role}. The list of who holds which role is itself access information, so it is gated rather than tidied away.`,
     ]));
   }
@@ -63,7 +63,7 @@ async function access(ctx) {
       head: role,
       render: (row) => (row.holders.includes(role)
         ? make("span", "chip on", "granted")
-        : make("span", "chip", "—")),
+        : make("span", "chip", "no")),
     })),
   ];
   const rows = Object.keys(matrix).map((permission) => ({ permission, holders: matrix[permission] }));
@@ -93,7 +93,7 @@ async function keys(ctx) {
       const { key, note } = await api.post("/api/admin/keys/rotate");
       box.replaceChildren(callout("warn", "key", make("span", null, [
         make("b", null, "Shown once. "),
-        `${key} — ${note}. It is stored as a SHA-256 digest, so this response is the only place the plaintext has ever existed.`,
+        `${key}. ${note}. It is stored as a SHA-256 digest, so this response is the only place the plaintext has ever existed.`,
       ])));
       ctx.toast("pipeline key rotated", "ok");
     } catch (err) {
@@ -104,7 +104,7 @@ async function keys(ctx) {
 
   return make("div", "stack", [
     callout("", "info", make("span", null, [
-      "Machine callers — the pipeline job, the board bot — present a key instead of a session. ",
+      "Machine callers, the pipeline job and the board bot, present a key instead of a session. ",
       make("b", null, "Two digests are accepted during a rotation"),
       " so a release window never has to wait for a human.",
     ])),
@@ -127,7 +127,7 @@ async function audit(ctx) {
   } catch (err) {
     if (err.status !== 403) throw err;
     return callout("bad", "shield", make("span", null, [
-      make("b", null, "403 — audit:read. "),
+      make("b", null, "403: audit:read. "),
       "A developer can see the board and every refusal on it, but not the trail of everyone else's actions.",
     ]));
   }
@@ -156,7 +156,7 @@ async function health() {
         ["Uptime", duration(h.uptimeSeconds)],
         ["Stream subscribers", String(h.subscribers)],
         ["Runtime dependencies", "express"],
-        ["Build step", "none — the browser loads these modules directly"],
+        ["Build step", "none, the browser loads these modules directly"],
       ]),
     }),
     panel("Store", {

@@ -2,7 +2,7 @@ import { api } from "../api.js";
 import { make, panel, badge, button, table, empty, stamp } from "../ui.js";
 import { LAYERS } from "../parts.js";
 
-export const meta = { title: "Board", subtitle: "Every card moves through validated transitions — a refusal says why" };
+export const meta = { title: "Board", subtitle: "Every card moves through validated transitions, and a refusal says why" };
 
 const PHASES = [
   ["intake", "Intake"],

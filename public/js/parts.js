@@ -5,7 +5,7 @@ export const LAYERS = ["team", "business", "product", "architecture", "engineeri
 export function kv(pairs) {
   const dl = make("dl", "kv");
   for (const [k, v] of pairs) {
-    dl.append(make("dt", null, k), make("dd", null, v === null || v === undefined ? "—" : v));
+    dl.append(make("dt", null, k), make("dd", null, v === null || v === undefined ? "n/a" : v));
   }
   return dl;
 }
@@ -16,7 +16,7 @@ export function feed(items, emptyText) {
   for (const { at, kind, actor, detail } of items) {
     list.appendChild(make("li", null, [
       make("span", "at", at),
-      make("span", null, [make("b", null, kind), " ", make("span", "who", actor || "system"), detail ? ` — ${detail}` : ""]),
+      make("span", null, [make("b", null, kind), " ", make("span", "who", actor || "system"), detail ? `: ${detail}` : ""]),
     ]));
   }
   return list;
